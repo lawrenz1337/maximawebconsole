@@ -3,6 +3,7 @@
 class MaximaRequest extends modRestController
 {
     public $type = 'string';
+    public $images = [];
 
     public $time = 0;
 
@@ -26,37 +27,38 @@ class MaximaRequest extends modRestController
         }
     }
 
-    private function getData($query)
+    private function getData($queries)
     {
         //add db
-        $query = $this->prepareQuery($query);
-        $result['message'] = $this->exec($query);
+        $queries = $this->prepareQuery(explode(PHP_EOL, $queries));
+        $result['message'] = $this->exec($queries);
         if ($this->type == 'image') {
             $result['image'] = "assets/{$this->modx->user->id}/{$this->time}.png";
         }
         return $result;
     }
 
-    private function prepareQuery($query)
+    private function prepareQuery($queries)
     {
-        $query = trim($query);
-        if ($query[strlen($query) - 1] != ';') {
-            $query .= ';';
-        }
-
-        if (strpos($query, 'plot') !== false || strpos($query, 'julia') !== false || strpos($query, 'mandelbrot') !== false) {
-            $this->type = 'image';
-            if (!file_exists(MODX_BASE_PATH."assets/{$this->modx->user->id}/")) {
-                mkdir(MODX_BASE_PATH."assets/{$this->modx->user->id}/");
+        foreach ($queries as &$query) {
+            $query = trim($query);
+            if ($query[strlen($query) - 1] != ';' && $query[strlen($query) - 1] != '$') {
+                $query .= ';';
             }
 
-            $query = preg_replace("/]\)\;/", "],[png_file,\\\"" . MODX_BASE_PATH . "assets/{$this->modx->user->id}/" . "{$this->time}.png\\\"])$", $query);
+            if (strpos($query, 'plot') !== false || strpos($query, 'julia') !== false || strpos($query, 'mandelbrot') !== false) {
+                $this->type = 'image';
+                $query[strlen($query) - 1] = '$';
+                if (!file_exists(MODX_BASE_PATH . "assets/{$this->modx->user->id}/")) {
+                    mkdir(MODX_BASE_PATH . "assets/{$this->modx->user->id}/");
+                }
+                $query = substr_replace($query, ',[png_file,"' . MODX_BASE_PATH . "assets/{$this->modx->user->id}/" . "{$this->time}.png\"]", strlen($query) - 2, 0);
+            }
         }
-
-        return $query;
+        return $queries;
     }
 
-    private function exec($query)
+    private function exec($queries)
     {
         $descriptorspec = array(
             0 => array("pipe", "r"),  // stdin - канал, из которого дочерний процесс будет читать
@@ -66,10 +68,14 @@ class MaximaRequest extends modRestController
 
         $cwd = '/tmp';
         $env = [];
-        $process = proc_open('maxima -q --batch-string="' .  $query . '"', $descriptorspec, $pipes, $cwd, $env);
+        $process = proc_open('maxima --very-quiet', $descriptorspec, $pipes, $cwd, $env);
 
-
+        $result = '';
         if (is_resource($process)) {
+            foreach ($queries as $query) {
+                fwrite($pipes[0], $query);
+            }
+            fwrite($pipes[0], "quit();");
             fclose($pipes[0]);
             $result = stream_get_contents($pipes[1]);
             fclose($pipes[1]);

@@ -4,7 +4,7 @@
             <div class="jumbotron">
                 {set $logged = $_modx->runSnippet('!isAuth')}
                 {if $logged}
-                    {$_modx->sendRedirect('http://maxima.local/')}
+                    {$_modx->sendRedirect($_modx->makeUrl(1))}
                 {else}
                     {$_modx->runSnippet('!Login')}
                 {/if}
