@@ -28,7 +28,7 @@
 $_lang['login'] = 'Вход';
 $_lang['login.invalid_post'] = 'WebLogin invalid POST action: [[+action]]';
 $_lang['login.login_err'] = 'Неизвестная ошибка при авторизации!';
-$_lang['login.logout'] = 'Выход';
+$_lang['login.logout'] = 'Exit';
 $_lang['login.logout_err'] = 'Неизвестная ошибка при выходе!';
 $_lang['login.password'] = 'Пароль';
 $_lang['login.username'] = 'Имя пользователя';

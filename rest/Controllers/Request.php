@@ -33,7 +33,7 @@ class MaximaRequest extends modRestController
         $queries = $this->prepareQuery(explode(PHP_EOL, $queries));
         $result['message'] = $this->exec($queries);
         if ($this->type == 'image') {
-            $result['image'] = "assets/{$this->modx->user->id}/{$this->time}.png";
+            $result['images'] = $this->images;
         }
         return $result;
     }
@@ -53,6 +53,7 @@ class MaximaRequest extends modRestController
                     mkdir(MODX_BASE_PATH . "assets/{$this->modx->user->id}/");
                 }
                 $query = substr_replace($query, ',[png_file,"' . MODX_BASE_PATH . "assets/{$this->modx->user->id}/" . "{$this->time}.png\"]", strlen($query) - 2, 0);
+                $this->images[] = "assets/{$this->modx->user->id}/" . "{$this->time}.png";
             }
         }
         return $queries;

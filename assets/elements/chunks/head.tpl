@@ -14,6 +14,9 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/theme/css/bootstrap.min.css">
     <style>
+        body{
+            padding-top: 4em;
+        }
         #output {
             font-weight: bold;
             font-size: large;
@@ -34,13 +37,39 @@
             -webkit-animation: spin 2s linear infinite;
             animation: spin 2s linear infinite;
         }
-        .default {
-            min-height: 400px;
-        }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+        .main-wrapper {
+            height: 100vh;
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+        .section {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .landing {
+            background-image: url("https://img3.goodfon.com/original/1366x768/1/60/blackboard-mathematics-algebra.jpg");
+            background-color: #17234E;
+            margin-bottom: 0;
+            background-repeat: no-repeat;
+            background-position: center;
+            -webkit-background-size: cover;
+            background-size: cover;
+            width: 100%;
+        }
+        .introtext {
+            position: relative;
+            padding-top: 50%;
+        }
+        .introtext button {
+           font-size: 50px;
         }
     </style>
 </head>
