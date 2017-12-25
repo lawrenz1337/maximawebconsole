@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="maximaweb" baseClass="xPDOObject" platform="mysql" defaultEngine="InnoDB" phpdoc-package="maximaweb"
+       version="1.1">
+
+    <object class="maximaweb_request" table="maximaweb_request" extends="xPDOSimpleObject">
+
+        <field key="user_id" dbtype="int" precision="20" phptype="integer" null="false" default=""/>
+        <field key="input" dbtype="text" phptype="sting" />
+        <field key="output" dbtype="text" phptype="string"/>
+        <field key="done" dbtype="int" precision="1" phptype="integer" null="false" default="0"/>
+        <field key="files" dbtype="text" phptype="string" null="true"/>
+
+        <aggregate alias="MaximaUser" class="modUser" local="user_id" foreign="id" cardinality="one" owner="foreign" />
+    </object>
+
+</model>

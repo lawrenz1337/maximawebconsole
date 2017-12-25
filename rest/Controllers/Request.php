@@ -4,12 +4,17 @@ class MaximaRequest extends modRestController
 {
     public $type = 'string';
     public $images = [];
-
-    public $time = 0;
+    /** @var $maxima maximaweb */
+    private $maxima = null;
+    private $recordId = null;
 
     public function initialize()
     {
-        $this->time = time();
+        $this->maxima = $this->modx->getService(
+            'maximaweb',
+            'maximaweb',
+            $this->modx->getOption('maximaweb.core_path', null, $this->modx->getOption('core_path') . 'components/maximaweb/') . 'model/'
+        );
     }
 
     public function verifyAuthentication()
@@ -27,20 +32,74 @@ class MaximaRequest extends modRestController
         }
     }
 
+    public function get()
+    {
+        $output = '';
+        $c = $this->modx->newQuery('maximaweb_request');
+        $c->where(array('user_id' => $this->modx->user->id));
+        $c->select('input,output,files');
+        $c->sortby('id', 'DESC');
+        $c->limit($this->getProperty('limit'), $this->getProperty('start'));
+        if ($c->prepare() && $c->stmt->execute()) {
+            $rawResults = $c->stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($rawResults as $row) {
+                $output .= '<tr>';
+                foreach ($row as $key => $col) {
+
+                    $output .= '<td>';
+                    if ($key == 'input'){
+                        $output .= $col;
+                    }
+                    if ($key == 'output'){
+                        $output .= '<pre>' . $col . '</pre>';
+                    }
+                    if ($key == 'files'){
+                        $imgArray = $this->modx->fromJSON($col);
+                        foreach ($imgArray as $img) {
+                            $output .= "<img class='img-fluid' src='" . $img . "'/><br>";
+                        }
+                    }
+                    $output .= '</td>';
+                }
+                $output .= '</tr>';
+            }
+        }
+        $this->success('', $output);
+    }
+
+    /**
+     * @param $queries
+     * @return mixed
+     * @throws Exception if database failed
+     */
     private function getData($queries)
     {
-        //add db
-        $queries = $this->prepareQuery(explode(PHP_EOL, $queries));
-        $result['message'] = $this->exec($queries);
-        if ($this->type == 'image') {
-            $result['images'] = $this->images;
+        /** @var maximaweb_request $object */
+        $object = $this->modx->newObject('maximaweb_request');
+        $object->set('user_id', $this->modx->user->id);
+        $object->set('input', $queries);
+        $object->set('output', '');
+        if ($object->save()) {
+            $this->recordId = $object->get('id');
+            $queries = $this->prepareQuery(explode(PHP_EOL, $queries));
+            $result['response'] = $this->maxima->exec($queries);
+            $object->set('output', $result['response']);
+            $object->set('done', 1);
+            if ($this->type == 'image') {
+                $result['images'] = $this->images;
+                $object->set('files', $this->modx->toJSON($this->images));
+            }
+            $object->save();
+            return $result;
+        } else {
+            throw new Exception('Error occured while writing to DB');
         }
-        return $result;
     }
 
     private function prepareQuery($queries)
     {
-        foreach ($queries as &$query) {
+        $i = 0;
+        foreach ($queries as $key => &$query) {
             $query = trim($query);
             if ($query[strlen($query) - 1] != ';' && $query[strlen($query) - 1] != '$') {
                 $query .= ';';
@@ -52,38 +111,11 @@ class MaximaRequest extends modRestController
                 if (!file_exists(MODX_BASE_PATH . "assets/{$this->modx->user->id}/")) {
                     mkdir(MODX_BASE_PATH . "assets/{$this->modx->user->id}/");
                 }
-                $query = substr_replace($query, ',[png_file,"' . MODX_BASE_PATH . "assets/{$this->modx->user->id}/" . "{$this->time}.png\"]", strlen($query) - 2, 0);
-                $this->images[] = "assets/{$this->modx->user->id}/" . "{$this->time}.png";
+                $query = substr_replace($query, ',[png_file,"' . MODX_BASE_PATH . "assets/{$this->modx->user->id}/" . "{$this->recordId}_{$i}.png\"]", strlen($query) - 2, 0);
+                $this->images[] = "assets/{$this->modx->user->id}/" . "{$this->recordId}_{$i}.png";
+                $i++;
             }
         }
         return $queries;
-    }
-
-    private function exec($queries)
-    {
-        $descriptorspec = array(
-            0 => array("pipe", "r"),  // stdin - канал, из которого дочерний процесс будет читать
-            1 => array("pipe", "w"),  // stdout - канал, в который дочерний процесс будет записывать
-            2 => array("file", "/tmp/error-output.txt", "a") // stderr - файл для записи
-        );
-
-        $cwd = '/tmp';
-        $env = [];
-        $process = proc_open('maxima --very-quiet', $descriptorspec, $pipes, $cwd, $env);
-
-        $result = '';
-        if (is_resource($process)) {
-            foreach ($queries as $query) {
-                fwrite($pipes[0], $query);
-            }
-            fwrite($pipes[0], "quit();");
-            fclose($pipes[0]);
-            $result = stream_get_contents($pipes[1]);
-            fclose($pipes[1]);
-            proc_close($process);
-
-        }
-
-        return $result;
     }
 }

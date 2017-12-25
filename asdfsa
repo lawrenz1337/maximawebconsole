@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="maximaweb" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM">
+    <object class="request" table="maximaweb_request" extends="xPDOObject">
+        <field key="id" dbtype="int" precision="11" phptype="integer" null="false" index="pk" generated="native"/>
+        <field key="user_id" dbtype="int" precision="20" phptype="integer" null="false" default=""/>
+        <field key="input" dbtype="string" phptype="sting" null="false" default=""/>
+        <field key="output" dbtype="string" phptype="string" null="false" default=""/>
+        <field key="done" dbtype="int" precision="1" phptype="integer" null="false" default="0"/>
+        <field key="files" dbtype="string" phptype="string" null="true" default=""/>
+    </object>
+</model>

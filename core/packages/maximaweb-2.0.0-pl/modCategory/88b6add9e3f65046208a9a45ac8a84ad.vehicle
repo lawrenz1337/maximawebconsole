@@ -1,0 +1,95 @@
+<?php return array (
+  'unique_key' => 'category',
+  'preserve_keys' => false,
+  'update_object' => true,
+  'related_objects' => 
+  array (
+    'Chunks' => 
+    array (
+      '46ee790e2e59068477ebda61bc385691' => 
+      array (
+        'preserve_keys' => false,
+        'update_object' => false,
+        'unique_key' => 'name',
+        'class' => 'modChunk',
+        'object' => '{"id":0,"source":1,"property_preprocess":0,"name":"tpl.maximaweb.item","description":"","editor_type":0,"category":0,"cache_type":0,"snippet":"<p>\\n    <strong>[[+name]]<\\/strong> -\\n    <small>[[+description]]<\\/small>\\n<\\/p>","locked":0,"properties":null,"static":0,"static_file":"core\\/components\\/maximaweb\\/elements\\/chunks\\/item.tpl","content":"<p>\\n    <strong>[[+name]]<\\/strong> -\\n    <small>[[+description]]<\\/small>\\n<\\/p>","file":"item"}',
+        'guid' => '6851094fb17a0d546e91c12a420f9258',
+        'native_key' => 0,
+        'signature' => '020529010b0f42f9f984827e165002eb',
+      ),
+      '1391e8dade47c37b81eb6c607be661e2' => 
+      array (
+        'preserve_keys' => false,
+        'update_object' => false,
+        'unique_key' => 'name',
+        'class' => 'modChunk',
+        'object' => '{"id":0,"source":1,"property_preprocess":0,"name":"tpl.maximaweb.office","description":"","editor_type":0,"category":0,"cache_type":0,"snippet":"<div id=\\"office-maximaweb-wrapper\\">\\n    <div id=\\"office-preloader\\"><\\/div>\\n<\\/div>","locked":0,"properties":null,"static":0,"static_file":"core\\/components\\/maximaweb\\/elements\\/chunks\\/office.tpl","content":"<div id=\\"office-maximaweb-wrapper\\">\\n    <div id=\\"office-preloader\\"><\\/div>\\n<\\/div>","file":"office"}',
+        'guid' => '172d50ffd5a5323af65568982999fc27',
+        'native_key' => 0,
+        'signature' => 'a4ccbe5be3cf9cb972d96fe292427a0d',
+      ),
+    ),
+    'Snippets' => 
+    array (
+      'ac3ec802a204d4185230e7962040ad4d' => 
+      array (
+        'preserve_keys' => false,
+        'update_object' => true,
+        'unique_key' => 'name',
+        'class' => 'modSnippet',
+        'object' => '{"id":0,"source":1,"property_preprocess":0,"name":"maximaweb","description":"maximaweb snippet to list items","editor_type":0,"category":0,"cache_type":0,"snippet":"\\/** @var modX $modx *\\/\\n\\/** @var array $scriptProperties *\\/\\n\\/** @var maximaweb $maximaweb *\\/\\n$maximaweb = $modx->getService(\'maximaweb\', \'maximaweb\', MODX_CORE_PATH . \'components\\/maximaweb\\/model\\/\', $scriptProperties);\\nif (!$maximaweb) {\\n    return \'Could not load maximaweb class!\';\\n}\\n\\n\\/\\/ Do your snippet code here. This demo grabs 5 items from our custom table.\\n$tpl = $modx->getOption(\'tpl\', $scriptProperties, \'Item\');\\n$sortby = $modx->getOption(\'sortby\', $scriptProperties, \'name\');\\n$sortdir = $modx->getOption(\'sortbir\', $scriptProperties, \'ASC\');\\n$limit = $modx->getOption(\'limit\', $scriptProperties, 5);\\n$outputSeparator = $modx->getOption(\'outputSeparator\', $scriptProperties, \\"\\\\n\\");\\n$toPlaceholder = $modx->getOption(\'toPlaceholder\', $scriptProperties, false);\\n\\n\\/\\/ Build query\\n$c = $modx->newQuery(\'maximawebItem\');\\n$c->sortby($sortby, $sortdir);\\n$c->where([\'active\' => 1]);\\n$c->limit($limit);\\n$items = $modx->getIterator(\'maximawebItem\', $c);\\n\\n\\/\\/ Iterate through items\\n$list = [];\\n\\/** @var maximawebItem $item *\\/\\nforeach ($items as $item) {\\n    $list[] = $modx->getChunk($tpl, $item->toArray());\\n}\\n\\n\\/\\/ Output\\n$output = implode($outputSeparator, $list);\\nif (!empty($toPlaceholder)) {\\n    \\/\\/ If using a placeholder, output nothing and set output to specified placeholder\\n    $modx->setPlaceholder($toPlaceholder, $output);\\n\\n    return \'\';\\n}\\n\\/\\/ By default just return output\\nreturn $output;","locked":0,"properties":"a:6:{s:3:\\"tpl\\";a:7:{s:4:\\"name\\";s:3:\\"tpl\\";s:4:\\"desc\\";s:18:\\"maximaweb_prop_tpl\\";s:4:\\"type\\";s:9:\\"textfield\\";s:7:\\"options\\";a:0:{}s:5:\\"value\\";s:18:\\"tpl.maximaweb.item\\";s:7:\\"lexicon\\";s:20:\\"maximaweb:properties\\";s:4:\\"area\\";s:0:\\"\\";}s:6:\\"sortby\\";a:7:{s:4:\\"name\\";s:6:\\"sortby\\";s:4:\\"desc\\";s:21:\\"maximaweb_prop_sortby\\";s:4:\\"type\\";s:9:\\"textfield\\";s:7:\\"options\\";a:0:{}s:5:\\"value\\";s:4:\\"name\\";s:7:\\"lexicon\\";s:20:\\"maximaweb:properties\\";s:4:\\"area\\";s:0:\\"\\";}s:7:\\"sortdir\\";a:7:{s:4:\\"name\\";s:7:\\"sortdir\\";s:4:\\"desc\\";s:22:\\"maximaweb_prop_sortdir\\";s:4:\\"type\\";s:4:\\"list\\";s:7:\\"options\\";a:2:{i:0;a:2:{s:4:\\"text\\";s:3:\\"ASC\\";s:5:\\"value\\";s:3:\\"ASC\\";}i:1;a:2:{s:4:\\"text\\";s:4:\\"DESC\\";s:5:\\"value\\";s:4:\\"DESC\\";}}s:5:\\"value\\";s:3:\\"ASC\\";s:7:\\"lexicon\\";s:20:\\"maximaweb:properties\\";s:4:\\"area\\";s:0:\\"\\";}s:5:\\"limit\\";a:7:{s:4:\\"name\\";s:5:\\"limit\\";s:4:\\"desc\\";s:20:\\"maximaweb_prop_limit\\";s:4:\\"type\\";s:11:\\"numberfield\\";s:7:\\"options\\";a:0:{}s:5:\\"value\\";i:10;s:7:\\"lexicon\\";s:20:\\"maximaweb:properties\\";s:4:\\"area\\";s:0:\\"\\";}s:15:\\"outputSeparator\\";a:7:{s:4:\\"name\\";s:15:\\"outputSeparator\\";s:4:\\"desc\\";s:30:\\"maximaweb_prop_outputSeparator\\";s:4:\\"type\\";s:9:\\"textfield\\";s:7:\\"options\\";a:0:{}s:5:\\"value\\";s:1:\\"\\n\\";s:7:\\"lexicon\\";s:20:\\"maximaweb:properties\\";s:4:\\"area\\";s:0:\\"\\";}s:13:\\"toPlaceholder\\";a:7:{s:4:\\"name\\";s:13:\\"toPlaceholder\\";s:4:\\"desc\\";s:28:\\"maximaweb_prop_toPlaceholder\\";s:4:\\"type\\";s:13:\\"combo-boolean\\";s:7:\\"options\\";a:0:{}s:5:\\"value\\";b:0;s:7:\\"lexicon\\";s:20:\\"maximaweb:properties\\";s:4:\\"area\\";s:0:\\"\\";}}","moduleguid":"","static":0,"static_file":"core\\/components\\/maximaweb\\/elements\\/snippets\\/maximaweb.php","content":"\\/** @var modX $modx *\\/\\n\\/** @var array $scriptProperties *\\/\\n\\/** @var maximaweb $maximaweb *\\/\\n$maximaweb = $modx->getService(\'maximaweb\', \'maximaweb\', MODX_CORE_PATH . \'components\\/maximaweb\\/model\\/\', $scriptProperties);\\nif (!$maximaweb) {\\n    return \'Could not load maximaweb class!\';\\n}\\n\\n\\/\\/ Do your snippet code here. This demo grabs 5 items from our custom table.\\n$tpl = $modx->getOption(\'tpl\', $scriptProperties, \'Item\');\\n$sortby = $modx->getOption(\'sortby\', $scriptProperties, \'name\');\\n$sortdir = $modx->getOption(\'sortbir\', $scriptProperties, \'ASC\');\\n$limit = $modx->getOption(\'limit\', $scriptProperties, 5);\\n$outputSeparator = $modx->getOption(\'outputSeparator\', $scriptProperties, \\"\\\\n\\");\\n$toPlaceholder = $modx->getOption(\'toPlaceholder\', $scriptProperties, false);\\n\\n\\/\\/ Build query\\n$c = $modx->newQuery(\'maximawebItem\');\\n$c->sortby($sortby, $sortdir);\\n$c->where([\'active\' => 1]);\\n$c->limit($limit);\\n$items = $modx->getIterator(\'maximawebItem\', $c);\\n\\n\\/\\/ Iterate through items\\n$list = [];\\n\\/** @var maximawebItem $item *\\/\\nforeach ($items as $item) {\\n    $list[] = $modx->getChunk($tpl, $item->toArray());\\n}\\n\\n\\/\\/ Output\\n$output = implode($outputSeparator, $list);\\nif (!empty($toPlaceholder)) {\\n    \\/\\/ If using a placeholder, output nothing and set output to specified placeholder\\n    $modx->setPlaceholder($toPlaceholder, $output);\\n\\n    return \'\';\\n}\\n\\/\\/ By default just return output\\nreturn $output;","file":"maximaweb"}',
+        'guid' => 'ad876c805005c389cec11c72091676ec',
+        'native_key' => 0,
+        'signature' => '95c8f5a8cf1bc8254627d1af57292abd',
+      ),
+    ),
+  ),
+  'related_object_attributes' => 
+  array (
+    'Chunks' => 
+    array (
+      'preserve_keys' => false,
+      'update_object' => false,
+      'unique_key' => 'name',
+    ),
+    'Snippets' => 
+    array (
+      'preserve_keys' => false,
+      'update_object' => true,
+      'unique_key' => 'name',
+    ),
+  ),
+  'namespace' => 'maximaweb',
+  'resolve' => 
+  array (
+    0 => 
+    array (
+      'type' => 'file',
+      'body' => '{"source":"maximaweb-2.0.0-pl\\/modCategory\\/88b6add9e3f65046208a9a45ac8a84ad\\/0\\/","target":"return MODX_CORE_PATH . \'components\\/\';","name":"maximaweb"}',
+    ),
+    1 => 
+    array (
+      'type' => 'file',
+      'body' => '{"source":"maximaweb-2.0.0-pl\\/modCategory\\/88b6add9e3f65046208a9a45ac8a84ad\\/1\\/","target":"return MODX_ASSETS_PATH . \'components\\/\';","name":"maximaweb"}',
+    ),
+    2 => 
+    array (
+      'type' => 'php',
+      'body' => '{"source":"maximaweb-2.0.0-pl\\/modCategory\\/88b6add9e3f65046208a9a45ac8a84ad.symlinks.resolver","type":"php","name":"symlinks"}',
+    ),
+    3 => 
+    array (
+      'type' => 'php',
+      'body' => '{"source":"maximaweb-2.0.0-pl\\/modCategory\\/88b6add9e3f65046208a9a45ac8a84ad.tables.resolver","type":"php","name":"tables"}',
+    ),
+  ),
+  'validate' => NULL,
+  'vehicle_package' => 'transport',
+  'vehicle_class' => 'xPDOObjectVehicle',
+  'guid' => '877673af2b112c0771285e2d86def622',
+  'package' => 'modx',
+  'class' => 'modCategory',
+  'signature' => '88b6add9e3f65046208a9a45ac8a84ad',
+  'native_key' => NULL,
+  'object' => '{"id":null,"parent":0,"category":"maximaweb","rank":0}',
+);

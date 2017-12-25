@@ -1,0 +1,17 @@
+<?php return array (
+  'preserve_keys' => true,
+  'update_object' => true,
+  'unique_key' => 'text',
+  'related_objects' => true,
+  'namespace' => 'maximaweb',
+  'resolve' => NULL,
+  'validate' => NULL,
+  'vehicle_package' => 'transport',
+  'vehicle_class' => 'xPDOObjectVehicle',
+  'guid' => 'cd960f6e6573c32e944441d559f35416',
+  'package' => 'modx',
+  'class' => 'modMenu',
+  'signature' => 'a3ab6343363e1c6b018131eda2a45376',
+  'native_key' => 'maximaweb',
+  'object' => '{"text":"maximaweb","parent":"components","action":"home","description":"maximaweb_menu_desc","icon":"","menuindex":0,"params":"","handler":"","permissions":"","namespace":"maximaweb"}',
+);

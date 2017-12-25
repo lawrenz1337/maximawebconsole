@@ -6,6 +6,8 @@
     <meta charset="[[++modx_charset]]"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.3/css/tether.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.3/js/tether.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
@@ -65,11 +67,10 @@
             width: 100%;
         }
         .introtext {
-            position: relative;
-            padding-top: 50%;
+            padding-top: 20%;
         }
         .introtext button {
-           font-size: 50px;
+           font-size: 5.9vw;
         }
     </style>
 </head>
