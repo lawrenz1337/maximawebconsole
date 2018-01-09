@@ -56,7 +56,20 @@ $(document).ready(function () {
 
         $.get('rest/request', {limit: 25, start: 0},
             function (returnedData) {
-                $('#request').append(returnedData.object);
+                var commands = returnedData.object;
+                var output = '';
+                commands.forEach(function (item, i, arr) {
+                    output += '<tr>';
+                    output += '<td>' + item.input + '</td>';
+                    output += '<td><pre>' + item.output + '</pre></td>';
+                    output += '<td>';
+                    item.files.forEach(function (image) {
+                        output += '<img class="img-fluid" src="' + image + '"/><br>';
+                    });
+                    output += '</td>';
+                    output += '</tr>';
+                });
+                $('#request').append(output);
             }, 'json').fail(function () {
             console.log("error");
         });

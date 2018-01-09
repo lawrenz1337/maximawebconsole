@@ -34,35 +34,18 @@ class MaximaRequest extends modRestController
 
     public function get()
     {
-        $output = '';
+        $output = [];
         $c = $this->modx->newQuery('maximaweb_request');
-        $c->where(array('user_id' => $this->modx->user->id));
+        $c->where(array('user_id' => $this->modx->user->id, 'done' => 1));
         $c->select('input,output,files');
         $c->sortby('id', 'DESC');
         $c->limit($this->getProperty('limit'), $this->getProperty('start'));
         if ($c->prepare() && $c->stmt->execute()) {
-            $rawResults = $c->stmt->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($rawResults as $row) {
-                $output .= '<tr>';
-                foreach ($row as $key => $col) {
-
-                    $output .= '<td>';
-                    if ($key == 'input'){
-                        $output .= $col;
-                    }
-                    if ($key == 'output'){
-                        $output .= '<pre>' . $col . '</pre>';
-                    }
-                    if ($key == 'files'){
-                        $imgArray = $this->modx->fromJSON($col);
-                        foreach ($imgArray as $img) {
-                            $output .= "<img class='img-fluid' src='" . $img . "'/><br>";
-                        }
-                    }
-                    $output .= '</td>';
-                }
-                $output .= '</tr>';
+            $results = $c->stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($results as &$row) {
+                $row['files'] = $this->modx->fromJSON($row['files']) ?: [];
             }
+            $output = $results;
         }
         $this->success('', $output);
     }
